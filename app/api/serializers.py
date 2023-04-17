@@ -27,4 +27,4 @@ station_information_serializer = StationInformationSchema()
 station_information_deserializer = StationInformationSchema(exclude=('id',))
 
 station_status_serializer = StationStatusSchema()
-station_information_deserializer = StationStatusSchema(exclude=('id',))
+station_status_deserializer = StationStatusSchema(exclude=('id',))
