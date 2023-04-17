@@ -2,7 +2,7 @@ from app.extensions import db
 import datetime
 import uuid
 
-class Station_Information(db.Model):
+class StationInformation(db.Model):
     # __tablename__ = 'information'
     station_id = db.Column(db.String(100), primary_key=True, nullable=False)
     id = db.Column(db.String(36), default=uuid.uuid4)
@@ -27,7 +27,7 @@ class Station_Information(db.Model):
             "self.longitude": self.longitude
         }
     
-class Station_Status(db.Model):
+class StationStatus(db.Model):
     # __tablename__ = 'status'
     station_id = db.Column(db.String(100), primary_key=True, nullable=False)
     id = db.Column(db.String(36), default=uuid.uuid4)
