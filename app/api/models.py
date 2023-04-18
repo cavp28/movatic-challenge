@@ -2,6 +2,7 @@ from app.extensions import db
 import datetime
 import uuid
 
+
 class StationInformation(db.Model):
     # __tablename__ = 'information'
     station_id = db.Column(db.String(100), primary_key=True, nullable=False)
@@ -18,15 +19,16 @@ class StationInformation(db.Model):
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
-    
+
     def json(self):
         return {
             "station_id": self.station_id,
             "address": self.address,
             "self.latitude": self.latitude,
-            "self.longitude": self.longitude
+            "self.longitude": self.longitude,
         }
-    
+
+
 class StationStatus(db.Model):
     # __tablename__ = 'status'
     station_id = db.Column(db.String(100), primary_key=True, nullable=False)
@@ -41,7 +43,16 @@ class StationStatus(db.Model):
     last_reported = db.Column(db.DateTime, nullable=False)
     # station = db.Column(db.String(36), db.ForeignKey('station_information.station_id'), nullable=False)
 
-    def __init__(self, station_id, is_returning, is_renting, is_installed, num_docks_available, num_bikes_available, last_reported):
+    def __init__(
+        self,
+        station_id,
+        is_returning,
+        is_renting,
+        is_installed,
+        num_docks_available,
+        num_bikes_available,
+        last_reported,
+    ):
         self.station_id = station_id
         self.is_returning = is_returning
         self.is_renting = is_renting
@@ -53,11 +64,11 @@ class StationStatus(db.Model):
 
     def json(self):
         return {
-            "station_id":self.station_id, 
-            "is_returning":self.is_returning, 
-            "is_renting ":self.is_renting, 
+            "station_id": self.station_id,
+            "is_returning": self.is_returning,
+            "is_renting ": self.is_renting,
             "is_installed": self.is_installed,
-            "num_docks_available": self.num_docks_available, 
+            "num_docks_available": self.num_docks_available,
             "num_bikes_available": self.num_bikes_available,
-            "last_reported": self.last_reported
-            }
+            "last_reported": self.last_reported,
+        }
