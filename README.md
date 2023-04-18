@@ -5,6 +5,9 @@ process. During the technical interview we will discuss your implementation with
 process and decisions. You should approach this the same way you would approach writing
 long-lasting code that would be used in a production environment.
 
+More info can be found in the challange instructions. [Click here to read it](https://github.com/cavp28/movatic-challenge/blob/42c88ee1e6b522d662b9707f18ea81c9239a0110/Movatic%20Backend%20Coding%20Challenge.pdf).
+
+
 ## Project Structure
 ```
 movatic-challange/
