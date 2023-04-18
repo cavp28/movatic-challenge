@@ -1,25 +1,20 @@
 from marshmallow import Schema, fields
 
-class AvailableBikesSchema(Schema):
-    electric = fields.Integer()
-    smart = fields.Integer()
-    classic = fields.Integer()
-
-class StationStatusSchema(Schema):
+class StationInformationSchema(Schema):
     id = fields.String(dump_only=True)
     station_id = fields.String(required=True)
-    address = fields.String(required=True)
+    address = fields.String()
     latitude = fields.Float()
     longitude = fields.Float()
 
-class StationInformationSchema(Schema):
+class StationStatusSchema(Schema):
     id = fields.String(dump_only=True)
     station_id = fields.String(required=True)
     is_returning = fields.Boolean()
     is_renting = fields.Boolean()
     is_installed = fields.Boolean()
     num_docks_available = fields.Integer()
-    num_bikes_available = fields.Nested(AvailableBikesSchema)
+    num_bikes_available = fields.Integer()
     last_reported = fields.DateTime()
 
 

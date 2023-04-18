@@ -35,7 +35,7 @@ class StationStatus(db.Model):
     is_renting = db.Column(db.Boolean, nullable=False, default=False)
     is_installed = db.Column(db.Boolean, nullable=False, default=False)
     num_docks_available = db.Column(db.Integer, nullable=False, default=0)
-    num_bikes_available = db.Column(db.JSON, nullable=False)
+    num_bikes_available = db.Column(db.Integer, nullable=False)
     # If we look here https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.0-RC/station_status.json
     # they say that this it comes as an integer, but I will use it cast it to DataTime, like the requirements says
     last_reported = db.Column(db.DateTime, nullable=False)
@@ -48,7 +48,7 @@ class StationStatus(db.Model):
         self.is_installed = is_installed
         self.num_docks_available = num_docks_available
         self.num_bikes_available = num_bikes_available
-        self.last_reported = datetime.datetime.fromtimestamp(last_reported)
+        self.last_reported = last_reported
         # self.station = station_id
 
     def json(self):

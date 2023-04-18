@@ -3,7 +3,7 @@ import requests
 from app.api import bp
 from app.api.controllers import get_stations_information, get_station_status, upsert_station_status_and_information
 from app.api.serializers import station_status_serializer, station_information_serializer, station_information_deserializer, station_status_deserializer
-
+import datetime
 
 @bp.route("/stations", methods=["GET"])
 def list_stations():
@@ -66,8 +66,8 @@ def ingest():
             station_information_list.append({
                 "station_id": station["station_id"],
                 "address": station["address"],
-                "latitude": station["latitude"],
-                "longitude": station["longitude"]
+                "latitude": station["lat"],
+                "longitude": station["lon"]
             })
 
         try:
@@ -84,29 +84,27 @@ def ingest():
         station_status_list = []
 
         for station in stations:
-
+            # Make sure to cast to boolean the integer values
             station_status_list.append({
                 "station_id": station["station_id"],
-                "is_returning": station["is_returning"],
-                "is_renting": station["is_renting"],
-                "is_installed": station["is_installed"],
-                "num_docks_available": station["num_docks_available"],
-                "num_bikes_available": station["num_bikes_available"],
-                "last_reported": station["last_reported"]
+                "is_returning": bool(station["is_returning"]),
+                "is_renting": bool(station["is_renting"]),
+                "is_installed": bool(station["is_installed"]),
+                "num_docks_available": int(station["num_docks_available"]),
+                "num_bikes_available": int(station["num_bikes_available"]),
+                "last_reported": datetime.datetime.fromtimestamp(station["last_reported"]).strftime("%Y-%m-%dT%H:%M:%SZ")
             })
         ## Now that we have the objets...
         
-        status_list = station_status_deserializer.load(station_status_list, many=True)
-        information_list = station_information_deserializer.load(station_information_list, many=True)
-
-        upserted_data = upsert_station_status_and_information(status_list=status_list, information_list=information_list)
+        deserialized_status_list = [station_status_deserializer.load(st_status) for st_status in station_status_list]
         
-        return jsonify({
-            "data_inserted_correctly": upserted_data
-        }),  201
+        deserialized_information_list = [station_information_deserializer.load(st_information) for st_information in station_information_list]
+
+        upserted_data = upsert_station_status_and_information(status_list=deserialized_status_list, information_list=deserialized_information_list)
+        print(upserted_data)
+        return json.dumps({'success':True, 'info': f"{len(deserialized_status_list)} status were upserted. {len(deserialized_information_list)} station information were upserted"}), 200, {'ContentType':'application/json'} 
+
     
     except Exception as e:
-       return jsonify({
-            "error": e
-        }),  500       
+       return json.dumps({'success':False, 'error': f"{e}"}), 500, {'ContentType':'application/json'}     
 
