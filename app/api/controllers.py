@@ -23,7 +23,6 @@ def upsert_station_status_and_information(status_list, information_list):
     
     for information in information_list:
         station_information_list.append(StationInformation(**information))
-
     
     try:
         db.session.bulk_save_objects(station_information_list)
