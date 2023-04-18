@@ -38,9 +38,27 @@ def upsert_station_status_and_information(status_list, information_list):
     try:
         db.session.bulk_insert_mappings(StationInformation, information_list)
         db.session.commit()
-        db.session.bulk_insert_mappings(StationStatus, status_list)
+
+    except exc.IntegrityError:
+        db.session.rollback()
+        db.session.bulk_update_mappings(StationInformation, information_list)
         db.session.commit()
-        return True
+
     except exc.SQLAlchemyError:
         db.session.rollback()
         return False
+
+    try:
+        db.session.bulk_insert_mappings(StationStatus, status_list)
+        db.session.commit()
+
+    except exc.IntegrityError:
+        db.session.rollback()
+        db.session.bulk_update_mappings(StationStatus, status_list)
+        db.session.commit()
+
+    except exc.SQLAlchemyError:
+        db.session.rollback()
+        return False
+
+    return True
