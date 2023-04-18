@@ -16,7 +16,7 @@ import datetime
 
 
 # TODO: Add pagination if there's time.
-# @bp.route("/stations", methods=["GET"])
+@bp.route("/stations", methods=["GET"])
 def list_stations():
     stations = get_stations_information()
     return (
