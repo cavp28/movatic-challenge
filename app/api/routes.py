@@ -15,6 +15,14 @@ from app.api.serializers import (
 import datetime
 
 
+@bp.route("/", methods=["GET","POST"])
+def index():
+    return (
+            json.dumps({"success": True, "message": "App running! :D"}),
+            500,
+            {"ContentType": "application/json"},
+        )
+
 # TODO: Add pagination if there's time.
 @bp.route("/stations", methods=["GET"])
 def list_stations():
